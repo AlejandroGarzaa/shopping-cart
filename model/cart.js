@@ -14,8 +14,15 @@ const cartSchema = new Schema(
             type: String,
             required: true,
         },
+        // quantity: {
+        //     type: Number,
+        //     required: true,
+        //     default: 1
+
+        // },
         cart_status: {
             type: String,
+            default: "Open"
             
         }
         
