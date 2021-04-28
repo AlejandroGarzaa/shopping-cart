@@ -1,10 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../controller/product');
-const session = require('express-session');
-
-
-router.use(session({ secret: 'secret', saveUninitialized: false, resave: false }));
 
 //add product
 

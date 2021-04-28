@@ -2,42 +2,43 @@ const Order = require('../model/order');
 const Cart = require('../model/cart');
 
 
-const newOrder = async (
-    username,
-    cost,
-    cart_id) => {
-        try{
+
+
+
+
+const newOrder = async (req, res) => {
+    const username = req.session.username;
+    const cost = req.body.cost;
+    //const cart_id = req.body.cart_id;
+    try {
         const open = "Open"
-    const order = await Cart.findOne({username: username, cart_status: open});
-    if (order){
-    cart_id = order.cart_id;
 
-    const place = new Order({
-        cost,
-        cart_id
-    
-    });
-    updateStatus(username);
-    return place.save();
-}
-        }catch(err){
-            console.log(err);
-            console.log("Cant create cart, no items in cart");
+        const order = await Cart.findOne({ username: username, cart_status: open });
+        if (order) {
+            const cart_id = order.cart_id;
+            order.cart_status = "Closed";
+
+            const place = new Order({
+                cost,
+                cart_id
+
+            });
+            order.save();
+            place.save();
+            res.status(201).send(`New order has been placed: ${order}, \n Order information: ${place}`);
+
+        } else {
+            res.status(400).send("Cant create cart, no items in cart")
         }
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(error.message);
+    }
 
-  };
-
-
-
-  const updateStatus = async (username) => {
-      const open = "Open" ;
-    const update = await Cart.findOne({username: username, cart_status: open});
-    if (update){
-    update.cart_status = "Closed";
-    return update.save();
-    
-  }return "no items in cart";
-}
+};
 
 
-module.exports = {newOrder, updateStatus }
+
+
+
+module.exports = { newOrder}
