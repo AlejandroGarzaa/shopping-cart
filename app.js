@@ -7,6 +7,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const productRoute = require('./routes/product');
 const cartRoute = require('./routes/cart');
+const orderRoute = require('./routes/order');
 
 
 // connect to db
@@ -55,7 +56,7 @@ const sessionMiddleware = (req, res, next) => {
 app.use(express.json());
 app.use('/user', userRoute);
 app.use('/cart',sessionMiddleware, cartRoute);
-//app.use('/order',orderRoute);
+app.use('/order',sessionMiddleware, orderRoute);
 app.use('/product', productRoute);
 
 

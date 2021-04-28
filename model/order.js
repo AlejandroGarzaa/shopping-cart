@@ -6,9 +6,13 @@ const Schema = mongoose.Schema;
 const orderSchema = new Schema(
     {
         cart_id: {
-            type: String,
-            required: true
+            type: Number,
+            
         
+        },
+        cost: {
+            type: Number,
+            required: true
         }
         
     },
