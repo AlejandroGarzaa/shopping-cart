@@ -37,8 +37,20 @@ const newOrder = async (req, res) => {
 
 };
 
+const getAll = async (req, res) => {
+    
+    try {
+        const order = await Order.find();
+        return res.status(201).send(order);
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(error.message);
+    }
+
+};
 
 
 
 
-module.exports = { newOrder}
+
+module.exports = { newOrder, getAll}
