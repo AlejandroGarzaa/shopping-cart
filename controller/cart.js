@@ -1,5 +1,4 @@
 const Cart = require('../model/cart');
-//const Product = require('../model/products');
 
 
 // check if user has open cart, if so refer to update cart

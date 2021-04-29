@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const userRoute = require('./routes/user');
-
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const productRoute = require('./routes/product');
@@ -31,7 +30,7 @@ app.use(
         resave: false,
         store: MongoStore.create({
             mongoUrl:
-            'mongodb+srv://username:username@cluster0.uuu2u.mongodb.net/shoppingCartData?retryWrites=true&w=majority',
+                'mongodb+srv://username:username@cluster0.uuu2u.mongodb.net/shoppingCartData?retryWrites=true&w=majority',
             collection: 'sessions',
             ttl: parseInt(SESS_LIFETIME),
         }),
@@ -55,12 +54,28 @@ const sessionMiddleware = (req, res, next) => {
 
 app.use(express.json());
 app.use('/user', userRoute);
-app.use('/cart',sessionMiddleware, cartRoute);
-app.use('/order',sessionMiddleware, orderRoute);
+app.use('/cart', sessionMiddleware, cartRoute);
+app.use('/order', sessionMiddleware, orderRoute);
 app.use('/product', productRoute);
 
 
 
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+    next(createError(404));
+});
 
-// server
+// error handler
+app.use(function (err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
+});
+
+
+//server
 app.listen(3000);
